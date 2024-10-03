@@ -51,3 +51,34 @@ spec:
     # a specific secret. This also corresponds to the filename containing the secret.
     # "secretPath" indicates the path in Vault from which the secret should be retrieved.
     # "secretKey" specifies the key within the Vault secret response to extract a value.
+```
+```yaml
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app
+  labels:
+    app: demo
+spec:
+  selector:
+    matchLabels:
+      app: demo
+  replicas: 1
+  template:
+    spec:
+      serviceAccountName: app
+      containers:
+        - name: app
+          image: my-app:1.0.0
+          volumeMounts:
+            - name: 'vault-db-creds'
+              mountPath: '/mnt/secrets-store'
+              readOnly: true
+      volumes:
+        - name: vault-db-creds
+          csi:
+            driver: 'secrets-store.csi.k8s.io'
+            readOnly: true
+            volumeAttributes:
+              secretProviderClass: 'vault-db-creds'
