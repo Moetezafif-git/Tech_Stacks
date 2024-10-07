@@ -36,3 +36,36 @@ When using Kubernetes APIs for service discovery in your application, you can qu
 For applications that are not natively designed for Kubernetes, the platform provides options to implement a network port or load balancer between your application and the backend Pods.
 
 Regardless of the approach, your workload can leverage these service discovery mechanisms to locate the target it needs to connect to.
+
+ ## Defining a Service 
+
+A **Service** is an object in Kubernetes, similar to a Pod or a ConfigMap. You can create, view, or modify Service definitions through the Kubernetes API, often using a command-line tool like `kubectl` to facilitate these API calls.
+
+For instance, if you have a set of Pods that listen on TCP port **9376** and are labeled with `app.kubernetes.io/name=MyApp`, you can define a Service to expose that TCP listener:
+
+You can define the Service using the following YAML configuration:
+
+```yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: my-service
+spec:
+  selector:
+    app.kubernetes.io/name: MyApp
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 9376
+
+```
+Applying this manifest creates a new Service named **my-service** with the default `ClusterIP` service type. This Service targets TCP port **9376** on any Pod labeled with `app.kubernetes.io/name: MyApp`.
+
+Kubernetes assigns this Service a unique IP address (the cluster IP), which is used by the virtual IP address mechanism. For more information on this mechanism, refer to the section on [Virtual IPs and Service Proxies](link-to-virtual-ips).
+
+The controller for this Service continuously monitors Pods that match its selector and updates the set of EndpointSlices for the Service as needed.
+
+### Important Note
+The name of a Service object must conform to a valid RFC 1035 label name.
+
+A Service can map any incoming port to a target port. By default, and for convenience, the `targetPort` is set to the same value as the `port` field.
