@@ -250,3 +250,8 @@ For Cloud Providers (AWS, Azure, Google Cloud): Instead of NodePort, you can set
 
 
  ## Step 2: Create the service using the following command.
+ 
+```bash
+kubectl create -f prometheus-service.yaml --namespace=monitoring
+```
+## Step 3: Once created, you can access the Prometheus dashboard using any of the Kubernetes node’s IP on port 30000. If you are on the cloud, make sure you have the right firewall rules to access port 30000 from your workstation.
