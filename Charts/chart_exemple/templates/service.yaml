@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: frontapp-service
+  namespace: {{ .Values.namespace }}
+spec:
+  selector:
+    app: {{ .Values.selector.app }}
+  type: {{ .Values.service.type }}
+  ports:
+   - port: {{ .Values.service.port }}
+     nodePort: {{ .Values.service.nodePort }}
+     name: frontapp-port
