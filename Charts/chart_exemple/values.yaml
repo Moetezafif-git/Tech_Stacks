@@ -1,0 +1,16 @@
+namespace: k8s-cluster-test
+image:
+  repository: repository
+  pullPolicy: IfNotPresent
+  tag: frontapp-image-name
+env:
+  - name: ANGULAR_APP_API
+    value: "https://application.com"
+  - name: ANGULAR_APP_ORIGIN_URL
+    value: "https://application.com"
+selector:
+  app: frontapp-test-app
+service:
+  type: NodePort
+  port: 3000
+  nodePort: 30115
