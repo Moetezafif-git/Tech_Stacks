@@ -59,3 +59,12 @@ deprecated: Whether this chart is deprecated (optional, boolean)
 annotations:
   example: A list of annotations keyed by name (optional)
 ```
+As of v3.3.2, additional fields are not allowed. The recommended approach is to add custom metadata in annotations.
+### Charts and Versioning
+Every chart must have a version number. A version must follow the SemVer 2 standard. Unlike Helm Classic, Helm v2 and later uses version numbers as release markers. Packages in repositories are identified by name plus version.
+
+For example, an nginx chart whose version field is set to version: 1.2.3 will be named:
+```code 
+nginx-1.2.3.tgz
+
+```
