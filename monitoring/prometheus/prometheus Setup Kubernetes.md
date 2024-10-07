@@ -214,3 +214,39 @@ kubectl get deployments --namespace=monitoring
 ```
 
 
+# Exposing Prometheus Dashboard via Kubernetes Service
+
+To access the Prometheus dashboard via an IP address or DNS name, you need to expose it as a Kubernetes service.
+
+## Step 1: Create a Service YAML File
+
+1. Create a file named `prometheus-service.yaml`.
+2. Copy the following contents into the file:
+
+```yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: prometheus-service
+  namespace: monitoring
+  annotations:
+    prometheus.io/scrape: 'true'
+    prometheus.io/port: '9090'
+spec:
+  selector:
+    app: prometheus-server
+  type: NodePort
+  ports:
+    - port: 8080
+      targetPort: 9090
+      nodePort: 30000
+
+```
+
+This configuration will expose Prometheus on all Kubernetes node IPs using port 30000.
+
+## Note
+For Cloud Providers (AWS, Azure, Google Cloud): Instead of NodePort, you can set the service type to `LoadBalancer`, which will automatically create a load balancer and point it to the Kubernetes service endpoint.
+
+
+ ## Step 2: Create the service using the following command.
