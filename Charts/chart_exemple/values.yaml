@@ -9,7 +9,7 @@ env:
   - name: ANGULAR_APP_ORIGIN_URL
     value: "https://application.com"
 selector:
-  app: frontapp-test-app
+  app: test-frontapp
 service:
   type: NodePort
   port: 3000
